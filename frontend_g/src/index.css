@@ -1,0 +1,19 @@
+/* Reset total para que Vite no interfiera */
+:root {
+  font-family: Arial, sans-serif;
+  background-color: #ffffff;
+  color: #000000;
+}
+
+body {
+  margin: 0;
+  display: block;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+#root {
+  width: 100%;
+  margin: 0;
+  text-align: left; /* Quitamos el centrado de Vite */
+}

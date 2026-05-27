@@ -1,0 +1,110 @@
+.main-container{
+  display: flex;
+  flex-direction: column;
+  padding: 40px;
+  gap: 40px;
+  max-width: 1300px;
+  margin: 0 auto;
+  font-family: 'Segoe UI', sans-serif;
+}
+@media (min-width: 768px){
+  .main-container { flex-direction: row; align-items: flex-start; }
+}
+
+.column { flex: 1; display: flex; flex-direction: column; min-height: 85vh; }
+
+.main-title { font-size: 36px; font-weight: 900; margin-bottom: 20px; text-transform: uppercase; }
+
+.add-form-row { display: flex; margin-bottom: 25px; border: 3px solid black; }
+
+.input-main{
+  flex: 1;
+  border: none;
+  padding: 15px;
+  font-size: 16px;
+  font-weight: bold;
+  outline: none;
+}
+
+.upload-btn{
+  border: 3px solid #000;
+  padding: 10px 25px;
+  font-weight: 900;
+  cursor: pointer;
+  background: #fff;
+  transition: background 0.2s;
+  display: inline-block;
+  text-align: center;
+}
+
+.card-item, .drive-card{
+  border: 3px solid #000;
+  padding: 20px;
+  margin-bottom: 20px;
+  background: white;
+  display: flex;
+  flex-direction: column;
+}
+
+.task-header{
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.task-text, .file-name{
+  font-size: 18px;
+  font-weight: 800;
+  word-break: break-all;
+}
+
+.file-info{
+  font-size: 13px;
+  color: #000;
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+.action-buttons-row{
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+.action-icon{
+  flex: 1;
+  border: 2px solid #000;
+  background: white;
+  padding: 8px;
+  text-align: center;
+  cursor: pointer;
+  text-decoration: none;
+  color: #000;
+  font-size: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.action-icon:hover { background: #f0f0f0; }
+
+.pagination-bar{
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 20px;
+}
+
+.pag-btn{
+  border: 3px solid #000;
+  background: white;
+  padding: 8px 16px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.pag-btn.active { background: #000; color: #fff; }
+
+.strikethrough { text-decoration: line-through; color: #888; }
