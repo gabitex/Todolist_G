@@ -4,14 +4,12 @@
   background-color: #ffffff;
   color: #000000;
 }
-
 body {
   margin: 0;
   display: block;
   min-width: 320px;
   min-height: 100vh;
 }
-
 #root {
   width: 100%;
   margin: 0;

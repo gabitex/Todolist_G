@@ -108,3 +108,39 @@
 .pag-btn.active { background: #000; color: #fff; }
 
 .strikethrough { text-decoration: line-through; color: #888; }
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f4f4f4;
+}
+.login-card {
+  border: 4px solid #000;
+  padding: 40px;
+  background: #fff;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 10px 10px 0px #000;
+}
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.border-black {
+  border: 3px solid #000 !important;
+}
+.W-100 {
+  width: 100%;
+}
+.error-text {
+  color: red;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+.info-text {
+  font-size: 14px;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
