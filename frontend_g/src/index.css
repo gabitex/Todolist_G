@@ -1,6 +1,6 @@
 /* Reset total para que Vite no interfiera */
 :root {
-  font-family: Arial, sans-serif;
+  font-family: 'Montserrat', sans-serif;
   background-color: #ffffff;
   color: #000000;
 }
