@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const SECRET_KEY = "MI_LLAVE";
 const crypto = require('crypto');
 const express = require('express');
+const https = require('https');
 const connectDB = require('./configBD/apN_mongo');
 const Tarea = require('./modelo_datos/Tarea');
 const Usuario = require('./modelo_datos/Usuario');
@@ -36,7 +37,7 @@ const storage = multer.diskStorage({//esta funcion, hecha con ia Claude---------
 const upload = multer({ storage });
 
 function limpiarCache() {
-    console.log("=> Limpiando caché);
+    console.log("=> Limpiando caché");
     cache.del('tareas');
 }
 
@@ -56,8 +57,7 @@ function authMiddleware(req, res, next){
         return res.status(401).json({ message: 'Token inválido o expirado' });
     }
 }
-
-// RUTAS DE AUTENTICACIÓN
+//rutas de autenticacion
 app.post('/api/auth/register', async (req, res) =>{
     try {
         const { correo, password } = req.body;
@@ -76,7 +76,7 @@ app.post('/api/auth/register', async (req, res) =>{
     }
 });
 
-app.post('/api/auth/login', async (req, res) => {
+app.post('/api/auth/login', async (req, res) =>{
     try {
         const { usuario, password } = req.body;
 
@@ -110,7 +110,7 @@ app.post('/api/auth/login', async (req, res) => {
     }
 });
 
-app.post('/api/auth/verify-2fa', (req, res) => {
+app.post('/api/auth/verify-2fa', (req, res) =>{
     const { codigo, tokenTemporal } = req.body;
 
     if (codigo === codigo2FA_servidor) {
@@ -123,10 +123,10 @@ app.post('/api/auth/verify-2fa', (req, res) => {
         }
     }
     res.status(400).json({ message: 'Código PIN incorrecto o expirado' });
-});//---Hecho con ayuda de la ia  claude hasta aca ----------------------------------------------
+});//---Hecho con ayuda de la ia claude hasta aca ----------------------------------------------
 
-// RUTAS TODOLIST ahora protegidas por usuario
-app.get('/listadetareas/appv1', authMiddleware, async (req, res) => {//ahora las rutas usan el id
+//rutas actualizadas y protegidas
+app.get('/listadetareas/appv1', authMiddleware, async (req, res) =>{//ahora las rutas usan el id
     try {
         const tareas = await Tarea.find({ usuario: req.userId }).sort({ createdAt: -1 });
         const respuestaFinal = {
@@ -150,7 +150,7 @@ app.get('/listadetareas/appv1', authMiddleware, async (req, res) => {//ahora las
     }
 });
 
-app.post('/listadetareas/appv1', authMiddleware, async (req, res) => {
+app.post('/listadetareas/appv1', authMiddleware, async (req, res) =>{
     try {
         const { tarea } = req.body;
         if (!tarea) return res.status(400).json({ message: 'Tarea vacía' });
@@ -163,7 +163,7 @@ app.post('/listadetareas/appv1', authMiddleware, async (req, res) => {
     }
 });
 
-app.put('/listadetareas/appv1/:id', authMiddleware, async (req, res) => {
+app.put('/listadetareas/appv1/:id', authMiddleware, async (req, res) =>{
     try {
         const { tarea, finalizado } = req.body;
         console.log(`=> Editando tarea ID: ${req.params.id}`);
@@ -182,7 +182,7 @@ app.put('/listadetareas/appv1/:id', authMiddleware, async (req, res) => {
     }
 });
 
-app.delete('/listadetareas/appv1/:id', authMiddleware, async (req, res) => {
+app.delete('/listadetareas/appv1/:id', authMiddleware, async (req, res) =>{
     try {
         console.log(`=> Intentando eliminar tarea ID: ${req.params.id}`);
         const eliminada = await Tarea.findOneAndDelete({ _id: req.params.id, usuario: req.userId });
@@ -199,8 +199,8 @@ app.delete('/listadetareas/appv1/:id', authMiddleware, async (req, res) => {
     }
 });
 
-//rutas ahora separadas por usuario
-app.post('/drive/upload', authMiddleware, upload.single('archivo'), (req, res) => {
+// RUTAS DRIVE ahora separadas por usuario
+app.post('/drive/upload', authMiddleware, upload.single('archivo'), (req, res) =>{
     try {
         if (!req.file) return res.status(400).json({ message: 'Sin archivo' });
 
@@ -226,7 +226,7 @@ app.get('/drive/files', authMiddleware, (req, res) => {
             const stats = fs.statSync(path.join(dir, file));
             return {
                 nombre: file,
-                url: `http://localhost:300/uploads/${req.userId}/${file}`,
+                url: `https://localhost:300/uploads/${req.userId}/${file}`,
                 size: (stats.size / 1024 / 1024).toFixed(2) + ' MB',
                 fecha: stats.birthtime
             };
@@ -235,7 +235,7 @@ app.get('/drive/files', authMiddleware, (req, res) => {
     });
 });
 
-app.delete('/drive/files/:name', authMiddleware, (req, res) => {
+app.delete('/drive/files/:name', authMiddleware, (req, res) =>{
     const filePath = path.join(__dirname, 'uploads', req.userId.toString(), req.params.name);
     if (fs.existsSync(filePath)) {
         fs.unlink(filePath, (err) => {
@@ -247,5 +247,13 @@ app.delete('/drive/files/:name', authMiddleware, (req, res) => {
     }
 });
 
+// SERVIDOR HTTPS
 const PORT = process.env.PORT || 300;
-app.listen(PORT, () => console.log(`Servidor listo en puerto ${PORT}`));
+const httpsOptions = {
+    key: fs.readFileSync(path.join(__dirname, 'key.pem')),
+    cert: fs.readFileSync(path.join(__dirname, 'cert.pem'))
+};
+
+https.createServer(httpsOptions, app).listen(PORT, () => {
+    console.log(`Servidor HTTPS listo en puerto ${PORT}`);
+});

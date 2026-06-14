@@ -12,7 +12,7 @@ function Drive() {
 
   const fetchArchivos = async () => {
     try {
-      const res = await axios.get('http://localhost:300/drive/files');
+      const res = await axios.get('https://localhost:300/drive/files');
       setArchivos(res.data || []);
     } catch (err) { console.error(err); }
   };
@@ -29,7 +29,7 @@ function Drive() {
           <input type="file" onChange={async (e) => {
             const d = new FormData();
             d.append('archivo', e.target.files[0]);
-            await axios.post('http://localhost:300/drive/upload', d);
+            await axios.post('https://localhost:300/drive/upload', d);
             fetchArchivos();
           }} hidden />
         </label>
@@ -44,7 +44,7 @@ function Drive() {
               <a href={file.url} download className="action-icon">⬇</a>
               <button
                 className="action-icon"
-                onClick={() => axios.delete(`http://localhost:300/drive/files/${file.nombre}`).then(fetchArchivos)}
+                onClick={() => axios.delete(`https://localhost:300/drive/files/${file.nombre}`).then(fetchArchivos)}
               >🗑️</button>
             </div>
           </div>

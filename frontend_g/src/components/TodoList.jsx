@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const API_URL = "http://localhost:300/listadetareas/appv1";
+const API_URL = "https://localhost:300/listadetareas/appv1";
 
 function TodoList() {
   const [tareas, setTareas] = useState([]);
@@ -32,7 +32,7 @@ function TodoList() {
     } catch (err) { console.error(err); }
   };
 
-  const eliminarTarea = async (id) => {//hecho con ayuda de ia claude----
+  const eliminarTarea = async (id) => {//hecho con ayuda de ia claude-------------------------------------
     if (!id) return;
     try {
       await axios.delete(`${API_URL}/${id}`);
@@ -55,7 +55,7 @@ function TodoList() {
       fetchTareas();
     } catch (err) { console.error(err); }
   };
-//hasta ahi, hecho con ayuda de la ia claude-------------
+//hasta ahi, hecho con ayuda de la ia claude------------------------------------------------------------------
   const totalPaginas = Math.ceil(tareas.length / itemsPorPagina);//corta el arraya para mosgrar 3 tareas
   const tareasActuales = tareas.slice((paginaTareas - 1) * itemsPorPagina, paginaTareas * itemsPorPagina);
 

@@ -15,7 +15,7 @@ function Login({ onLoginSuccess }) {
     e.preventDefault();
     setErrorAuth("");
     try {
-      await axios.post('http://localhost:300/api/auth/register', { correo: username, password });//manda correro y password al backend
+      await axios.post('https://localhost:300/api/auth/register', { correo: username, password });//manda correro y password al backend
       alert("¡Cuenta creada con éxito!..inicia secion");
       setEsRegistro(false);
       setPassword("");
@@ -24,11 +24,11 @@ function Login({ onLoginSuccess }) {
     }
   };
 
-  const handleLogin = async (e) => {//hecho con ayuda de ia claude---------
+  const handleLogin = async (e) => {//hecho con ayuda de ia claude------------------------------------
     e.preventDefault();
     setErrorAuth("");
     try {
-      const res = await axios.post('http://localhost:300/api/auth/login', { usuario: username, password });
+      const res = await axios.post('https://localhost:300/api/auth/login', { usuario: username, password });
       if (res.data.requiere2FA) {//manda credenciales y el bakend responde cn el token
         setTempToken(res.data.tokenTemporal);
         setCodigoSugerido(res.data.codigoParaPrueba);
@@ -43,7 +43,7 @@ function Login({ onLoginSuccess }) {
     e.preventDefault();
     setErrorAuth("");
     try {
-      const res = await axios.post('http://localhost:300/api/auth/verify-2fa', {
+      const res = await axios.post('https://localhost:300/api/auth/verify-2fa', {
         codigo: code2FA,
         tokenTemporal: tempToken
       });
@@ -55,7 +55,7 @@ function Login({ onLoginSuccess }) {
       setErrorAuth(err.response?.data?.message || "Código de verificación incorrecto");
     }
   };
-//hasta aqui hecho con ayuda de ia claude-----
+//hasta aqui hecho con ayuda de ia claude---------------------------------------------------------------
   return (
     <div className="login-container">
       <div className="login-card">
